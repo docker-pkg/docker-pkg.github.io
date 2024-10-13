@@ -1,31 +1,29 @@
-name: Update Registry Pages
+name: Update Packages
 
 on:
   push:
     branches:
       - master
-  schedule:
-    - cron: "0 0 * * *"  # Daily schedule
 
 jobs:
-  update-registry:
+  update-packages:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Fetch packages and update site
+      - name: Fetch Container Packages from GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub provided token
         run: |
-          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          curl -H "Authorization: Bearer $GITHUB_TOKEN" \
                -H "Accept: application/vnd.github.v3+json" \
-               https://api.github.com/orgs/docker-pack/packages?package_type=container \
+               "https://api.github.com/orgs/docker-pack/packages?package_type=container" \
                > packages.json
-          python update_html.py packages.json
+          
+          # Check the contents of packages.json for debugging
+          cat packages.json
 
-      - name: Commit updated page
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add index.html
-          git commit -m "Update registry page with new packages"
-          git push
+      - name: Update HTML
+        run: python update_html.py packages.json
