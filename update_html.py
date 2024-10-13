@@ -30,7 +30,12 @@ def main(packages_file):
     """Main function to read the package data and update the HTML file."""
     # Load the package data from the JSON file
     with open(packages_file, 'r') as f:
-        packages = json.load(f)
+        data = f.read()
+        print(f"Raw JSON data: {data}")  # Print the raw data for debugging
+        packages = json.loads(data)  # Parse the JSON data
+
+    # Check the loaded packages
+    print(f"Loaded packages: {packages}")  # Print the loaded packages for debugging
 
     # Generate the HTML content
     html_content = generate_html(packages)
