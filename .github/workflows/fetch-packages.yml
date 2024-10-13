@@ -3,7 +3,7 @@ name: Fetch Packages
 on:
   push:
     branches:
-      - main  # Change to your desired branch
+      - master  # Change to your desired branch
 
 jobs:
   fetch_packages:
