@@ -2,51 +2,23 @@ import json
 import sys
 
 def generate_html(packages):
-    """Generates HTML content for the index page based on the package data."""
-    html_content = """<!DOCTYPE html>
-<html>
-<head>
-    <title>docker-pack Container Registry</title>
-</head>
-<body>
-    <h1>docker-pack Container Registry</h1>
-    <p>Explore our Docker images and packages hosted on GitHub Container Registry:</p>
-    <ul>
-"""
+    if 'message' in packages:  # Check for error message in the response
+        print(f"Error: {packages['message']}")
+        return "<h1>Error fetching packages</h1>"
 
+    html_content = "<html><body><h1>Packages</h1><ul>"
     for package in packages:
-        package_name = package['name']
-        package_url = package['html_url']
-        html_content += f'        <li><a href="{package_url}">{package_name}</a></li>\n'
-
-    html_content += """    </ul>
-</body>
-</html>
-"""
-
+        package_name = package['name']  # Ensure this is a dictionary
+        html_content += f"<li>{package_name}</li>"
+    html_content += "</ul></body></html>"
     return html_content
 
-def main(packages_file):
-    """Main function to read the package data and update the HTML file."""
-    # Load the package data from the JSON file
-    with open(packages_file, 'r') as f:
-        data = f.read()
-        print(f"Raw JSON data: {data}")  # Print the raw data for debugging
-        packages = json.loads(data)  # Parse the JSON data
-
-    # Check the loaded packages
-    print(f"Loaded packages: {packages}")  # Print the loaded packages for debugging
-
-    # Generate the HTML content
+def main(package_file):
+    with open(package_file) as f:
+        packages = json.load(f)
     html_content = generate_html(packages)
+    with open("index.html", "w") as html_file:
+        html_file.write(html_content)
 
-    # Write the HTML content to index.html
-    with open('index.html', 'w') as f:
-        f.write(html_content)
-
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: python update_html.py <path_to_packages_json>")
-        sys.exit(1)
-
+if __name__ == "__main__":
     main(sys.argv[1])
