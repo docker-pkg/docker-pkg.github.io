@@ -13,13 +13,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Fetch Packages from GitHub
+      - name: Fetch Container Packages from GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token for authentication
         run: |
           curl -H "Authorization: token $GITHUB_TOKEN" \
                -H "Accept: application/vnd.github.v3+json" \
-               https://api.github.com/orgs/docker-pack/packages \
+               "https://api.github.com/orgs/docker-pack/packages?package_type=container" \
                > packages.json
 
       - name: Display Packages
