@@ -1,0 +1,27 @@
+name: Fetch Packages
+
+on:
+  push:
+    branches:
+      - master  # Change to your desired branch
+
+jobs:
+  fetch_packages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Fetch Packages from GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token for authentication
+        run: |
+          curl -H "Authorization: token $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               https://api.github.com/orgs/docker-pack/packages \
+               > packages.json
+
+      - name: Display Packages
+        run: |
+          cat packages.json  # Display the contents of packages.json for debugging (optional)
