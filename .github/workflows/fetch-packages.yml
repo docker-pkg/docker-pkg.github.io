@@ -3,7 +3,7 @@ name: Fetch Packages
 on:
   push:
     branches:
-      - master  # Change to your desired branch
+      - main  # Change to your desired branch
 
 jobs:
   fetch_packages:
@@ -13,13 +13,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Fetch Container Packages from GitHub
+      - name: Fetch Packages from GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token for authentication
         run: |
+          # Fetch all packages, including container types
           curl -H "Authorization: token $GITHUB_TOKEN" \
                -H "Accept: application/vnd.github.v3+json" \
-               "https://api.github.com/orgs/docker-pack/packages?package_type=container" \
+               "https://api.github.com/orgs/docker-pack/packages" \
                > packages.json
 
       - name: Display Packages
