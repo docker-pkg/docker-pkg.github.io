@@ -1,0 +1,23 @@
+[
+    {
+        "name": "image1",
+        "html_url": "https://ghcr.io/docker-pack/image1",
+        "package_type": "container",
+        "version": "latest",
+        "description": "This is the first image for demonstration purposes."
+    },
+    {
+        "name": "image2",
+        "html_url": "https://ghcr.io/docker-pack/image2",
+        "package_type": "container",
+        "version": "1.0.0",
+        "description": "This image serves as a second example."
+    },
+    {
+        "name": "image3",
+        "html_url": "https://ghcr.io/docker-pack/image3",
+        "package_type": "container",
+        "version": "0.1.0",
+        "description": "A third image that showcases additional features."
+    }
+]
